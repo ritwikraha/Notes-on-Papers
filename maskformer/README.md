@@ -9,6 +9,14 @@
     - Panoptic Segmentation: Panoptic segmentation is a newer type of segmentation that combines both semantic and instance segmentation. In panoptic segmentation, all the pixels in the image are classified into either object or stuff classes. The object classes represent instances of objects, while the stuff classes represent the background or environment. This approach provides a more comprehensive understanding of the image by combining both object-level and scene-level information.
 
 
+Example:
+![image](https://i.imgur.com/tGnBSOq.png)
+
+Links:
+[Semantic vs. Instance vs. Panoptic Segmentation](https://pyimagesearch.com/2022/06/29/semantic-vs-instance-vs-panoptic-segmentation/)
+
+# Per-Pixel Classification is Not All You Need for Semantic Segmentation
+
 ## Abstract 
 - Semantic Segmentation
     - Per-pixel classification: Here we apply a classification loss to each output pixel. This formulation naturally partitions the image into semantic regions.
@@ -18,4 +26,14 @@
     - And can such a mask classification module **outperform** existing per-pixel classification methods for semantic segmentation?
 
 ## Introduction
+- To address the above questions the authors propose Maskformer approach that seamelessly connects per-pixel classification model into a mask classification model.
+- **How?**
+    - Uses the set prediction mechanism shown in DETR
+    - Transformer Decoder to compute set of pairs (class prediction, mask embedding vector)
+    - Use the mask embedding vector to get the binary mask precition. How?
+        - Dot product between mask embedding vector and per-pixel embedding from underlying CNN
+
+## Related Works
+
+## From Per-Pixel to Mask Classification
 
