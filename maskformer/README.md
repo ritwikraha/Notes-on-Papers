@@ -55,8 +55,41 @@ Links:
              - To train a mask classification model
              - We need to find a matching $\sigma$ between <img width="136" alt="Screenshot 2023-04-19 at 12 35 03 PM" src="https://user-images.githubusercontent.com/44690292/232993746-4045fa1a-c76f-4c16-849c-a96cb44f809a.png"> and <img width="420" alt="Screenshot 2023-04-19 at 12 35 38 PM" src="https://user-images.githubusercontent.com/44690292/232993869-831bc7b1-f8c7-49b3-8a40-20b63e60c61b.png">
              - Since $N$ is far larger than $N_gt$, we pad the set of ground truth tokens with $\phi$
-             - 
+       ## Object detection set prediction loss
 
+        DETR infers a *fixed-size* set of $N$ predictions. $N$ is significantly larger than the typical number of objects in an image.
+
+        * $y \to$ ground truth set of objects. (Note: The ground truth set of objects is padded with $\phi$ to be of the same length as that of the predicted set).
+        * $\hat{y} \to$ predicted set of objects. $\hat{y} = \\{\hat{y}_{i}\\}^{N}\_{i}$
+
+        > Given a bipartite graph, a matching is a subset of the edges for which every vertex belongs to exactly one of the edge.
+
+        The objective is to find an *optimal* bipartite matching of the two sets (ground truth and the predictions). The authors propose a loss to fulfil this objective.
+
+        To understand the proposed loss let's lay some foundation first. 
+
+        $\mathfrak{S}_{N}\to$ is a set of all the possible permutations of $N$.
+
+        If $N = 2$, $\mathfrak{S}_{N} = \\{ \\{1, 2\\}, \\{2, 1\\}\\}$
+
+        To find the optimal bipartite matching between thes two sets we search for a permutaiton of $N$ elements $\sigma \in \mathfrak{S}_{N}$ with the lowest cost:
+
+        $$\hat{\sigma} = \text{arg min}_{\sigma \in \mathfrak{S}_{N}} \sum_{i}^{N} \mathcal{L}_{\text{match}}(y_{i}, \hat{y}_{\sigma(i)})$$
+
+        With $N=2$ example the cost function looks something like this:
+
+        For $\sigma = \\{1, 2\\}$:
+
+        $\mathcal{L}\_{\text{match}}(y\_{1}, \hat{y}\_{1}) + \mathcal{L}_{\text{match}}(y\_{2}, \hat{y}\_{2})$
+
+
+        For $\sigma = \\{2, 1\\}$:
+
+        $\mathcal{L}\_{\text{match}}(y\_{1}, \hat{y}\_{2}) + \mathcal{L}_{\text{match}}(y\_{2}, \hat{y}\_{1})$
+
+        We will now choose the $\sigma$ that lowers the cost. Upon selecting the permutation that lowers the cost, we eventually get the optimal bipartite matching of the ground truth and the predicted objects.
+
+        That is all fun and games, but how do we chose $\sigma$? This is where **hungarian algorithm** enters.
 
 
 
