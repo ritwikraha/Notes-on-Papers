@@ -42,7 +42,25 @@ Links:
         - Prediction values are: <img width="175" alt="Screenshot 2023-04-19 at 11 14 11 AM" src="https://user-images.githubusercontent.com/44690292/232977761-b490a9e4-07e1-4e52-9b42-33bea524c6ee.png">
         - Ground truth labels are: <img width="254" alt="Screenshot 2023-04-19 at 11 16 48 AM" src="https://user-images.githubusercontent.com/44690292/232978118-689b2d43-0cf7-433e-93a5-080b357c96ff.png">
         - for every pixel a per pixel cross entropy or negative log likelihood is applied <img width="284" alt="Screenshot 2023-04-19 at 11 17 52 AM" src="https://user-images.githubusercontent.com/44690292/232978323-cfd05218-91b7-442c-b3c9-b696d6e360f2.png">
+    - ### Mask Classification 
+    -  requires two steps
+        - Partitioning:
+            - Group into N regions with the help of binary masks.
+            - <img width="201" alt="Screenshot 2023-04-19 at 12 19 15 PM" src="https://user-images.githubusercontent.com/44690292/232989832-307fe005-964e-4747-8a2e-7213fc2f9881.png">
+        - Associating:
+             - Each region is associated with some distribution over K categories
+             - Desired output z is defined as <img width="139" alt="Screenshot 2023-04-19 at 12 25 06 PM" src="https://user-images.githubusercontent.com/44690292/232991086-355583c6-3762-44c8-a37b-0f9e656758ae.png">
+             - In addition the probability distribiution also contains a $\phi$ token for no-object classes.
+        - Training Mask Classification:
+             - To train a mask classification model
+             - We need to find a matching $\sigma$ between <img width="136" alt="Screenshot 2023-04-19 at 12 35 03 PM" src="https://user-images.githubusercontent.com/44690292/232993746-4045fa1a-c76f-4c16-849c-a96cb44f809a.png"> and <img width="420" alt="Screenshot 2023-04-19 at 12 35 38 PM" src="https://user-images.githubusercontent.com/44690292/232993869-831bc7b1-f8c7-49b3-8a40-20b63e60c61b.png">
+             - Since $N$ is far larger than $N_gt$, we pad the set of ground truth tokens with $\phi$
+             - 
 
+
+
+
+    
 
 
 
