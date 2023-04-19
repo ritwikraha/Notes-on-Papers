@@ -36,4 +36,13 @@ Links:
 ## Related Works
 
 ## From Per-Pixel to Mask Classification
+- Formulating semantic segmentation as either a per-pixel classification or mask classification
+    - ### Per Pixel Classification
+        - predict the probability distribution over all possible K categories for every pixel of an H×W image
+        - Prediction values are: <img width="175" alt="Screenshot 2023-04-19 at 11 14 11 AM" src="https://user-images.githubusercontent.com/44690292/232977761-b490a9e4-07e1-4e52-9b42-33bea524c6ee.png">
+        - Ground truth labels are: <img width="254" alt="Screenshot 2023-04-19 at 11 16 48 AM" src="https://user-images.githubusercontent.com/44690292/232978118-689b2d43-0cf7-433e-93a5-080b357c96ff.png">
+        - for every pixel a per pixel cross entropy or negative log likelihood is applied <img width="284" alt="Screenshot 2023-04-19 at 11 17 52 AM" src="https://user-images.githubusercontent.com/44690292/232978323-cfd05218-91b7-442c-b3c9-b696d6e360f2.png">
+
+
+
 
