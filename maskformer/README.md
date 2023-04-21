@@ -95,16 +95,16 @@ Links:
         ### MaskFormer
         
        1. **Pixel-level module:**
-   - Input image size: H × W (height × width)
-   - Feature map: F ∈ R^(C_F × H_S × W_S), where C_F is the number of channels and S is the stride (we use S = 32 in this work)
-   - Per-pixel embeddings: E_pixel ∈ R^(C_E × H × W), where C_E is the embedding dimension
+   - Input image size: $H × W$ (height × width)
+   - Feature map: $F \in R^{(C_F × H_S × W_S)}$, where $C_F$ is the number of channels and $S$ is the stride (we use $S = 32$ in this work)
+   - Per-pixel embeddings: $E_pixel \in R^{(C_E × H × W)}$, where $C_E$ is the embedding dimension
 
 2. **Transformer module:**
    - Input: Image features F and N learnable positional embeddings (queries)
-   - Output: N per-segment embeddings Q ∈ R^(C_Q × N), where C_Q is the embedding dimension
+   - Output: N per-segment embeddings $Q \in R^{(C_Q × N)}$, where $C_Q$ is the embedding dimension
 
 3. **Segmentation module:**
-   - Class probability predictions: {p_i ∈ Δ(K+1)}^N_i=1, where Δ is the simplex (probability distribution over K+1 classes) and N is the number of segments
+   - Class probability predictions: ${p_i \in Δ^{(K+1)}}^N_{i=1}$, where Δ is the simplex (probability distribution over K+1 classes) and N is the number of segments
    - For mask prediction:
        * An MLP with 2 hidden layers converts per-segment embeddings Q to N mask embeddings E_mask ∈ R^(C_E × N)
        * Binary mask prediction m_i ∈ [0,1]^(H × W) is obtained by taking the dot product between the i-th mask embedding and per-pixel embeddings E_pixel, followed by a sigmoid activation function:
