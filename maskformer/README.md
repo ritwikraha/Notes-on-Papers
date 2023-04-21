@@ -90,6 +90,40 @@ Links:
         We will now choose the $\sigma$ that lowers the cost. Upon selecting the permutation that lowers the cost, we eventually get the optimal bipartite matching of the ground truth and the predicted objects.
 
         That is all fun and games, but how do we chose $\sigma$? This is where **hungarian algorithm** enters.
+        
+        
+        ### MaskFormer
+        
+       1. **Pixel-level module:**
+   - Input image size: H × W (height × width)
+   - Feature map: F ∈ R^(C_F × H_S × W_S), where C_F is the number of channels and S is the stride (we use S = 32 in this work)
+   - Per-pixel embeddings: E_pixel ∈ R^(C_E × H × W), where C_E is the embedding dimension
+
+2. **Transformer module:**
+   - Input: Image features F and N learnable positional embeddings (queries)
+   - Output: N per-segment embeddings Q ∈ R^(C_Q × N), where C_Q is the embedding dimension
+
+3. **Segmentation module:**
+   - Class probability predictions: {p_i ∈ Δ(K+1)}^N_i=1, where Δ is the simplex (probability distribution over K+1 classes) and N is the number of segments
+   - For mask prediction:
+       * An MLP with 2 hidden layers converts per-segment embeddings Q to N mask embeddings E_mask ∈ R^(C_E × N)
+       * Binary mask prediction m_i ∈ [0,1]^(H × W) is obtained by taking the dot product between the i-th mask embedding and per-pixel embeddings E_pixel, followed by a sigmoid activation function:
+         m_i[h, w] = sigmoid(E_mask[:, i]^T · E_pixel[:, h, w])
+
+**Loss function during training:**
+- L_mask-cls: A combination of a cross-entropy classification loss and a binary mask loss L_mask for each predicted segment
+- L_mask: A linear combination of a focal loss and a dice loss, multiplied by hyperparameters λ_focal and λ_dice, respectively
+
+And the simplified math explanation:
+
+- Feature map: A low-resolution version of the input image, with a reduced number of channels
+- Per-pixel embeddings: A higher-resolution representation of the image, where each pixel is associated with an embedding vector
+- Per-segment embeddings: A set of vectors encoding global information about each segment
+- Class probability predictions: A probability distribution over classes for each segment
+- Binary mask prediction: A matrix representing the shape of each segment in the image, with values between 0 and 1
+
+The model calculates the binary mask prediction by taking the dot product of the i-th mask embedding and per-pixel embeddings, then applying a sigmoid function. The loss function used during training combines classification and mask prediction errors.
+
 
 
 
