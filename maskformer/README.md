@@ -106,13 +106,13 @@ Links:
 3. **Segmentation module:**
    - Class probability predictions: ${p_i \in Δ^{(K+1)}}^N_{i=1}$, where Δ is the simplex (probability distribution over K+1 classes) and N is the number of segments
    - For mask prediction:
-       * An MLP with 2 hidden layers converts per-segment embeddings Q to N mask embeddings E_mask ∈ R^(C_E × N)
-       * Binary mask prediction m_i ∈ [0,1]^(H × W) is obtained by taking the dot product between the i-th mask embedding and per-pixel embeddings E_pixel, followed by a sigmoid activation function:
-         m_i[h, w] = sigmoid(E_mask[:, i]^T · E_pixel[:, h, w])
+       * An MLP with 2 hidden layers converts per-segment embeddings Q to N mask embeddings $E_mask \in R^(C_E × N)$
+       * Binary mask prediction $m_i \in [0,1]^(H × W)$ is obtained by taking the dot product between the i-th mask embedding and per-pixel embeddings E_pixel, followed by a sigmoid activation function:
+         $m_i[h, w] = sigmoid(E_mask[:, i]^T · E_pixel[:, h, w])$
 
 **Loss function during training:**
 - L_mask-cls: A combination of a cross-entropy classification loss and a binary mask loss L_mask for each predicted segment
-- L_mask: A linear combination of a focal loss and a dice loss, multiplied by hyperparameters λ_focal and λ_dice, respectively
+- L_mask: A linear combination of a focal loss and a dice loss, multiplied by hyperparameters $λ_focal$ and $λ_dice$, respectively
 
 And the simplified math explanation:
 
