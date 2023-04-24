@@ -74,7 +74,7 @@ Links:
 
         To find the optimal bipartite matching between thes two sets we search for a permutaiton of $N$ elements $\sigma \in \mathfrak{S}_{N}$ with the lowest cost:
 
-        $$\hat{\sigma} = \text{arg min}_{\sigma \in \mathfrak{S}_{N}} \sum_{i}^{N} \mathcal{L}_{\text{match}}(y_{i}, \hat{y}_{\sigma(i)})$$
+        $\hat{\sigma} = \text{arg min}_{\sigma \in \mathfrak{S}_{N}} \sum_{i}^{N} \mathcal{L}_{\text{match}}(y_{i}, \hat{y}_{\sigma(i)})$
 
         With $N=2$ example the cost function looks something like this:
 
