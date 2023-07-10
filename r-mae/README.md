@@ -106,4 +106,61 @@ The final concept for the model takes inspiration from DETR (DEtection TRansform
 11. Modeling the problem as a classification task allows for easy balance of weights between foreground and background regions.
 
 
+### Region Meets MAE
 
+The Region AutoEncoder (RAE) is fully compatible with the Masked AutoEncoder (MAE), meaning they can work together smoothly. 
+
+The training can be done together by using the pixel encoder from the MAE and applying a combined loss function. The combined loss function is the sum of two individual losses: LI (probably referring to the loss from the MAE or image loss) and LR (likely referring to the region loss from the RAE), with a balance factor λ (lambda) in between. The balance factor λ is set to 1 by default, meaning that both types of loss are considered equally important during training.
+
+In simpler terms:
+
+"The RAE can work well with the MAE. They can be trained together by bringing back the pixel encoder from the MAE and using a combined measurement of mistakes, which considers both types of losses equally."
+
+<img width="694" alt="Screenshot 2023-07-11 at 1 29 23 AM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/b2234f36-d8bb-4322-a4b6-3593e93a547a">
+
+
+Figure 2, provides a visual illustration of the default pre-training pipeline, including what might be less important or 'de-highlighted' parts. The key points mentioned are:
+
+The 'pixel branch' feeds into the 'region branch'. In other words, the process or data flow that deals with pixels contributes to the process or data flow that deals with regions, but not the other way around.
+
+The 'mask' is shared between the two branches. A mask in this context usually means certain data that is used in both the pixel and region processes.
+
+The pipeline is named R-MAE, which stands for Region-aware Masked Autoencoding. This name reflects that it's a process that uses masked autoencoding (a type of machine learning method), but with awareness or consideration of regions in images.
+
+
+### Implementation details
+
+
+1. **Source of regions:** 
+   - They used a tool called the Felzenswalb-Huttenlocher (FH) algorithm to identify different parts, or 'regions', of the images. 
+   - This tool doesn't need any guidance (it's "unsupervised"), it's fast, and it looks at the whole image. 
+   - It's commonly used in many other ways of finding objects in images, like something called selective search.
+
+2. **Pre-training data:** 
+   - They prepared their models (RAE and R-MAE) using a collection of images called COCO train2017.
+   - They chose COCO because it has many pictures with full scenes and it also has 'ground-truth' regions - that means parts of the image that are accurately labelled, which can be very useful for training. 
+   - To generate regions, they used the FH tool at three different 'sizes', namely {500, 1000, 1500}. These sizes also set the smallest 'clusters' or groups of pixels that can be a region.
+   - The COCO dataset has fewer images than another popular dataset called ImageNet. So, they ran the training process for a longer time (4,000 rounds, compared to the usual 800) which ends up being about half of what they usually do with the MAE method.
+
+3. **Other pre-training details:**
+   - They generally followed the same settings (called hyperparameters) as those used in the MAE method.
+   - They set the initial 'learning rate' to 0.0001. The learning rate is like the size of steps taken when the model is learning. A smaller step size can make the learning process more stable and helps maintain good performance.
+   - They used a version of their models that deals with 'length'. 
+   - They used a specific tool called ViT-B to handle pixels, and a 1-block, 128-dimensional version of ViT for parts called the 'neck', 'region encoder', and 'region decoder'.
+   - After the region decoder, they used a simple network called a 3-layer Multilayer Perceptron (MLP) to predict regions.
+   - They took 8 regions from each image (and they could repeat some regions), and they set a 'mask ratio' of 0.75. The mask ratio has to do with how much of the image is used for training.
+   - They set the weights for two things (λ and background loss) to 1. This means they consider both of these factors equally important.
+   - When they used MAE, the part of the model that handles pixels would send information to the part that handles regions, and they would use the same 'random masks' in both parts. Random masks are a way of randomly ignoring some parts of the image during training to help the model learn better.
+
+## Conclusion
+
+
+The authors are presenting a new pre-training method called R-MAE. This method focuses on the concept of 'regions' in the Masked AutoEncoder (MAE) model, which is an important concept in visual understanding.
+
+The authors have conducted a lot of experiments and the results show that R-MAE is more 'region-aware'. This means it's better at understanding and using information about regions in images. Because of this, it can improve performance on tasks that involve identifying specific locations in images, such as detection and segmentation tasks.
+
+One of the key features of R-MAE is that it treats regions as 'queries'. This makes the 'region branch' (the part of the model that handles regions) very efficient, only adding a small amount of additional computational work (1.3% overhead).
+
+Despite this efficiency, the region branch is key to R-MAE's performance. The method achieves state-of-the-art results among variants of MAE that have been pre-trained on ImageNet, a large image database often used in visual recognition research.
+
+Finally, the authors hope their work will inspire further research in this area. They want to close the gap to natural language processing by learning the visual equivalent of words in computer vision, meaning they want to improve how machines understand and interpret visual information, much like how they understand and interpret text.
