@@ -17,11 +17,51 @@ This is done in two ways:
 - The authors mention that the trained RAE model can be used to optimize the MAE model parallelly by simply restoring the pixel decoder.
 
 ## What other solutions have been considered in the past?
+I understand this can be a bit complex, so let's simplify:
 
+1. **Local:** 
+   - Usually, in machine learning, entire images are looked at as one whole unit. However, real-world photos are complex, with different details (local contents) found throughout a single scene.
+   
+2. **Motivation from R-CNN series:** 
+   - This complexity has motivated the development of certain methods, like the R-CNN series, which pay particular attention to different regions within an image, called Regions-of-Interest (RoIs).
+
+3. **Contrastive or Siamese learning:** 
+   - In other types of learning, such as contrastive or Siamese learning, the 2D details of images are often simplified into global vectors, basically reducing the image into a single, less detailed representation. This is done to compare one image to another. 
+
+4. **Potential downside:** 
+   - However, there can be downsides to simplifying the image too much, especially when trying to locate specific things within the image. 
+   - As a result, many newer methods have shifted focus to look at contrast within a single image, using details from local parts of the image like points or regions.
+
+5. **Reconstructive methods:** 
+   - Reconstructive methods, like denoising autoencoders, maintain the 2D structure of the image. 
+   - However, it's not yet clear how using regions could further improve these types of methods.
 # Wait what is MAE again?
 
 ## Why MAE?
 
+1. **Task:** 
+   - The task of MAE (Masked Autoencoding) is to hide part of an image and then try to fill in the missing parts by predicting the values of the hidden pixels. 
+   - To make this task challenging, a high percentage of the image (e.g., 75%) is typically hidden. 
+   - The machine's attempt at reconstruction is compared to the original image to see how accurate it is.
+
+2. **Architecture:** 
+   - The architecture of MAE works like an autoencoder, a type of machine learning model that tries to recreate its input.
+   - The particular type of autoencoder used here, called ViT (Vision Transformer), breaks the image down into patches and treats them like a sequence of tokens (just like words in a sentence).
+   - During the training process, some of these "tokens" are removed and the model tries to fill them back in. 
+   - After the model is trained, the part of it that does the encoding can be used as a "backbone" for other tasks, basically helping to pre-process images for other types of machine learning tasks.
+
+1. **Object-centric:** 
+   - Another strong reason for considering regions in images comes from the goal to make machine learning for images more like the learning process for natural language.
+   - The way we learn language and the way computers learn to recognize images are quite different. 
+
+2. **Natural language and images:** 
+   - In natural language, words carry specific, distinct meanings. However, in images, we're dealing with raw signals recorded in pixels, which is less straightforward.
+
+3. **Objects as counterparts to words:** 
+   - In visual perception, objects could serve as the equivalent to words in language. This is because, in the visual world, we constantly refer to and interact with objects, which can often be captured by regions within an image.
+
+4. **Bridging the gap:** 
+   - By improving how well machines can recognize regions in images (region awareness), the hope is to find new ways to bridge the gap between the way we learn language and the way machines learn to recognize images.
 # How R-MAE works?
 
 ## RAE
