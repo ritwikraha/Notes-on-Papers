@@ -1,11 +1,20 @@
 # What is the problem?
-TL;DR: What if we could use region-augmented reconstructive Pre-training for vision models starting with Masked Auto Encoders?
-
+So a few days back I was reading this paper, and a line really stuck with me:
 “Human perception will group similar scenes and objects together to parse complex scenes and objects”
+And then
+"Meanwhile, in vision, objects can serve as a natural counterpart to words..."
+Okay a lot of line stuck with me, but the point is this:
+Objects are analogous to words in a visual context.
+The paper in question is a recent release from Meta titled 'R-MAE'
 
-Faster RCNN has already validated this idea through multiple literature and architecture.
+<img width="450" alt="Screenshot 2023-07-20 at 12 06 16 AM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/13c3a70b-3fad-469a-bedc-86c74f0e65fe">
 
-Reconstructive pretraining such as Masked Auto Encoder has proven to be an effective visual model while providing competitive performance.
+TL;DR: If you don't want to read the paper and want a short one-line summary here you go: 
+
+What if we could use region-augmented reconstructive Pre-training for vision models starting with Masked Auto Encoders?
+The paper goes back to the olden days:
+- Faster RCNN has already validated this idea through multiple literature and architecture, meanwhile
+- Reconstructive pretraining such as Masked Auto Encoder has proven to be an effective visual model while providing competitive performance.
 
 So the question remains how well do regions improve the performance of reconstructive pretraining models like MAE?
 
