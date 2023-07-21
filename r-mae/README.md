@@ -16,23 +16,24 @@ The paper goes back to the olden days:
 - Faster RCNN has already validated this idea through multiple literature and architecture, meanwhile
 - Reconstructive pretraining such as Masked Auto Encoder has proven to be an effective visual model while providing competitive performance.
 
-So the question remains how well do regions improve the performance of reconstructive pretraining models like MAE?
+The real question is how well regions improve the performance of reconstructive pretraining models like MAE.
 
 # What is the solution?
 The authors of the paper propose to begin with MAE as a representative baseline and explore the use/advantage of pre-computed regions in an MAE style.
 
+<img width="373" alt="Screenshot 2023-07-21 at 11 46 02 PM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/6d06ea4b-4871-4773-8346-465ffa88c702">
 This is done in two ways:
 - First, the authors create RAE (Region Auto Encoder) which is similar to MAE but with the exception of focusing on regions or region maps as opposed to pixels.
 - The authors mention that the trained RAE model can be used to optimize the MAE model parallelly by simply restoring the pixel decoder.
 
 ## What other solutions have been considered in the past?
-I understand this can be a bit complex, so let's simplify:
+But before we get into all of that let us try to revisit some old friends. Why regions? This can't be a new concept in computer vision/ there are hardly a few of them left. So what made the authors think about regions as a useful feature for augmenting the performance of pretraining models.
 
 1. **Local:** 
-   - Usually, in machine learning, entire images are looked at as one whole unit. However, real-world photos are complex, with different details (local contents) found throughout a single scene.
+   - Usually, in machine learning, entire images are looked at as one whole unit. However, real-world photos are complex, with different details (local contents) found throughout a single scene. Here the paper tells us to study one of the intrinsic properties of regions, local.
    
 2. **Motivation from R-CNN series:** 
-   - This complexity has motivated the development of certain methods, like the R-CNN series, which pay particular attention to different regions within an image, called Regions-of-Interest (RoIs).
+   - In the past, this has motivated the development of certain methods, like the R-CNN series, which pay particular attention to different regions within an image, called Regions-of-Interest (RoIs).
 
 3. **Contrastive or Siamese learning:** 
    - In other types of learning, such as contrastive or Siamese learning, the 2D details of images are often simplified into global vectors, basically reducing the image into a single, less detailed representation. This is done to compare one image to another. 
@@ -49,6 +50,7 @@ I understand this can be a bit complex, so let's simplify:
 ## Why MAE?
 
 1. **Object-centric:** 
+   - It is now time to visit the other intrinsic property of regions: objects.
    - Another strong reason for considering regions in images comes from the goal to make machine learning for images more like the learning process for natural language.
    - The way we learn language and the way computers learn to recognize images are quite different. 
 
@@ -63,7 +65,7 @@ I understand this can be a bit complex, so let's simplify:
   
 
  ## But wait, what is MAE?
- 
+ MAE is a seminal paper from Kaiming He et al from the same lab of Meta AI. This paper shows that masked autoencoders (MAE)are scalable self-supervised learners for computer vision. Our MAE approach is simple: we mask random patches of the input image and reconstruct the missing pixels. It is based on two core designs
 1. **Task:** 
    - The task of MAE (Masked Autoencoding) is to hide part of an image and then try to fill in the missing parts by predicting the values of the hidden pixels. 
    - To make this task challenging, a high percentage of the image (e.g., 75%) is typically hidden. 
