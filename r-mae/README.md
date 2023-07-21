@@ -22,12 +22,15 @@ The real question is how well regions improve the performance of reconstructive 
 The authors of the paper propose to begin with MAE as a representative baseline and explore the use/advantage of pre-computed regions in an MAE style.
 
 <img width="373" alt="Screenshot 2023-07-21 at 11 46 02 PM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/6d06ea4b-4871-4773-8346-465ffa88c702">
+
 This is done in two ways:
 - First, the authors create RAE (Region Auto Encoder) which is similar to MAE but with the exception of focusing on regions or region maps as opposed to pixels.
 - The authors mention that the trained RAE model can be used to optimize the MAE model parallelly by simply restoring the pixel decoder.
 
 ## What other solutions have been considered in the past?
-But before we get into all of that let us try to revisit some old friends. Why regions? This can't be a new concept in computer vision/ there are hardly a few of them left. So what made the authors think about regions as a useful feature for augmenting the performance of pretraining models.
+But before we get into all of that let us try to revisit some old friends. Why regions? This can't be a new concept in computer vision/ there are hardly a few of them left. So what made the authors think about regions as a useful feature for augmenting the performance of pretraining models?
+
+<img width="349" alt="Screenshot 2023-07-21 at 11 53 14 PM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/9d3dfd11-3bd5-4a3f-b978-15af05daf714">
 
 1. **Local:** 
    - Usually, in machine learning, entire images are looked at as one whole unit. However, real-world photos are complex, with different details (local contents) found throughout a single scene. Here the paper tells us to study one of the intrinsic properties of regions, local.
@@ -45,9 +48,12 @@ But before we get into all of that let us try to revisit some old friends. Why r
 5. **Reconstructive methods:** 
    - Reconstructive methods, like denoising autoencoders, maintain the 2D structure of the image. 
    - However, it's not yet clear how using regions could further improve these types of methods.
-# Wait why does MAE come into the picture?
+
+Wait why does MAE come into the picture?
 
 ## Why MAE?
+
+<img width="346" alt="Screenshot 2023-07-21 at 11 53 23 PM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/7f1c67b0-ca8e-4a74-9b79-36281d91d0c5">
 
 1. **Object-centric:** 
    - It is now time to visit the other intrinsic property of regions: objects.
@@ -64,12 +70,21 @@ But before we get into all of that let us try to revisit some old friends. Why r
    - By improving how well machines can recognize regions in images (region awareness), the hope is to find new ways to bridge the gap between the way we learn language and the way machines learn to recognize images.
   
 
- ## But wait, what is MAE?
- MAE is a seminal paper from Kaiming He et al from the same lab of Meta AI. This paper shows that masked autoencoders (MAE)are scalable self-supervised learners for computer vision. Our MAE approach is simple: we mask random patches of the input image and reconstruct the missing pixels. It is based on two core designs
+ But wait, what is MAE?
+
+ ## MAE a.k.a Maksed Auto Encoders a.k.a Scalable Vision Learners
+
+ <img width="459" alt="Screenshot 2023-07-22 at 12 03 54 AM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/90bcf876-75cc-4966-a810-8d96354d8fe7">
+ 
+The MAE paper, authored by Kaiming He and his team from the Meta AI lab, is a groundbreaking work in the field of computer vision. It introduces the concept of "masked autoencoders" (MAE) as a robust method for self-supervised learning in computer vision. In simple terms, the MAE technique involves hiding random parts of an image and then trying to fill in the missing sections.
+
 1. **Task:** 
    - The task of MAE (Masked Autoencoding) is to hide part of an image and then try to fill in the missing parts by predicting the values of the hidden pixels. 
    - To make this task challenging, a high percentage of the image (e.g., 75%) is typically hidden. 
    - The machine's attempt at reconstruction is compared to the original image to see how accurate it is.
+
+<img width="245" alt="Screenshot 2023-07-22 at 12 07 02 AM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/88a3cf84-e50c-4bce-b05a-1e6671bb63ab">
+
 
 2. **Architecture:** 
    - The architecture of MAE works like an autoencoder, a type of machine learning model that tries to recreate its input.
@@ -81,7 +96,12 @@ But before we get into all of that let us try to revisit some old friends. Why r
 # How R-MAE works?
 
 ## RAE
+
+<img width="337" alt="Screenshot 2023-07-22 at 12 12 21 AM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/7c3b8556-ed14-4aa8-8ade-60c362517def">
+
 The authors mention that before going into why R-MAE is considered they must first establish the use of $x$ to pretrain representations. Where $x$ is an additional signal. There are basically three ways to do this:
+
+<img width="396" alt="Screenshot 2023-07-22 at 12 13 34 AM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/acd27368-66b0-4db4-8a94-79af3d2b9958">
 
 1. Feeding $x$ as an input - The more information the system has, the easier it is for it to understand and learn from the data it's working with.
 2. Predicting $x$ as a target - The model can learn using 'x' as a guide, but the task can be so hard that the model might learn the training data too well and perform poorly on new data.
@@ -91,12 +111,16 @@ The authors mention that before going into why R-MAE is considered they must fir
 
 ### Region Maps
 
+<img width="334" alt="Screenshot 2023-07-22 at 12 14 13 AM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/1a3389a6-849a-4dab-a974-9762462c044a">
+
 - Regions are first prepared to be an image like
 - Each region can be represented by a binary-valued region map with the dimensions of the image
 - Each element in the map has a value of either 0 or 1
 - Given any partially visible region map (mask ration = $\beta_{R}$) the model will be asked to complete it same as MAE does for pixels.
 
 ### Architecture
+
+<img width="333" alt="Screenshot 2023-07-22 at 12 15 10 AM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/9827dfda-d1a4-44d1-8a1f-c4a4b37750eb">
 
 - RAE, like MAE, consists of two main parts: an encoder and a decoder. These are used for region autoencoding, which means they are used to encode and decode regions of an image.
 - The encoder and decoder are built using ViT (Vision Transformer) blocks. There are 'mE' number of 'pE'-dimensional ViT blocks used for the encoder, and 'mD' number of 'pD'-dimensional ViT blocks used for the decoder.
@@ -116,6 +140,8 @@ In summary:
 
 ### One-to-many mapping
 
+<img width="365" alt="Screenshot 2023-07-22 at 12 15 58 AM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/1f90b7b4-daf9-4a12-9b0e-398fb85e254e">
+
 - Regions in images are considered an additional 'modality' or type of data compared to pixels in a pixel-based MAE system. However, there's a distinct challenge here that can't be fully addressed just by considering regions as another type of data.
 - Unlike other data types (like depth or semantic maps), where there is a one-to-one correspondence to pixels, the mapping between images and regions is one-to-many. That means one pixel can belong to many regions, which adds complexity to the task.
 - This problem is also encountered in object detection, and the usual solution (as used by R-CNN, a type of convolutional network used for object detection) is to sample and stack regions in the batch axis, processing each region separately.
@@ -133,6 +159,9 @@ To summarize:
 
 
 ### Regions as queries – the length variant
+
+<img width="344" alt="Screenshot 2023-07-22 at 12 16 58 AM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/172ba04e-dec8-4c96-a3c0-90e42983ea12">
+
 
 The final concept for the model takes inspiration from DETR (DEtection TRansformer) and uses 'object queries' to decode objects. The method and the benefits are broken down as follows:
 
@@ -163,6 +192,9 @@ The final concept for the model takes inspiration from DETR (DEtection TRansform
 
 
 ### Region Meets MAE
+
+<img width="356" alt="Screenshot 2023-07-22 at 12 17 35 AM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/65e20cac-e7f3-4a7d-9729-f092747cdcfe">
+
 
 The Region AutoEncoder (RAE) is fully compatible with the Masked AutoEncoder (MAE), meaning they can work together smoothly. 
 
@@ -210,6 +242,7 @@ The pipeline is named R-MAE, which stands for Region-aware Masked Autoencoding. 
 
 ## Conclusion
 
+<img width="373" alt="Screenshot 2023-07-22 at 12 18 23 AM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/44647b30-d85e-43b5-99a7-73fb0bce5592">
 
 The authors are presenting a new pre-training method called R-MAE. This method focuses on the concept of 'regions' in the Masked AutoEncoder (MAE) model, which is an important concept in visual understanding.
 
