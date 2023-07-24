@@ -189,11 +189,29 @@ In simpler terms, imagine the model as a student learning to classify animals in
 
 ![image](https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/765ae340-8fd4-448e-a8b9-232d491290b8)
 
+### Implementation
 
-## Experiments
-[WIP]
+Keras CV provides a nice and easy implementation of AugMix that you can try in any of your existing data loading pipelines. Here is a small snippet to get you started:
 
-### Calibration
+```
+import keras_cv
+import tensorflow_datasets as tfds
+
+# Load the dataset
+dataset = tfds.load(
+    name="oxford_iiit_pet"
+)
+
+# Build the AugMix layer and pass the images through the layer
+augmix = keras_cv.layers.preprocessing.AugMix(value_range=(0, 255))
+augmix_inputs = augmix(batch_inputs)
+
+keras_cv.visualization.plot_image_gallery(
+    images=augmix_inputs["images"],
+    value_range=(0, 255),
+)
+```
+
 
 ## Conclusion
 1. **AUGMIX:** We need to think of AUGMIX like a chef's special recipe for training a model. The recipe includes creating and mixing together different versions of the same image (like a cake with different toppings), and then teaching the model to recognize these as essentially the same thing. (all chefs are whimsical)
@@ -205,66 +223,5 @@ In simpler terms, imagine the model as a student learning to classify animals in
 4. **Reliable Models:** By using AUGMIX, models can be more reliable. This is important especially when models are used in situations where it's really important they don't make mistakes, like in self-driving cars or medical diagnoses.
 
 So summing up, AUGMIX is like a special training method (chef's secret recipe) that helps our models (students) do really well on their exams, keeps them confident about their answers, and makes them reliable even when faced with slightly unfamiliar questions (like an image of a shocked cat). This is especially useful when we need our students to perform tasks where mistakes can lead to serious problems, like AI taking over the world and targeting humans. Just kidding :)
-
-## Implementation
-
-Did you really just waste your time reading all that theory?
-
-I don't know, did you? DID YOU!?
-
-```
-from keras_cv.layers.preprocessing import AugMix
-
-model = Sequential([
-    Conv2D(32, 3, padding='same', activation='relu'),
-    MaxPooling2D(),
-    Conv2D(64, 3, padding='same', activation='relu'),
-    MaxPooling2D(),
-    Flatten(),
-    Dense(128, activation='relu'),
-    Dense(10, activation='softmax')
-])
-
-model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-
-# Augment the training data using AUGMIX.
-augmix_layer = AugMix(
-    alpha=1,
-    beta=1,
-    num_mixes=3,
-    prob=1.0,
-    rotate_limit=20,
-    translate_limit=0.1,
-    zoom_limit=0.1,
-    cutout_const=0.5,
-    color_jitter_const=0.4,
-)
-
-train_data = augmix_layer(train_data)
-
-# Train the model.
-model.fit(train_data, train_labels, epochs=10)
-
-# Evaluate the model on the test data.
-test_loss, test_acc = model.evaluate(test_data, test_labels)
-
-print('Test loss:', test_loss)
-print('Test accuracy:', test_acc)
-```
-
-Here are some of the key arguments for the AugMix layer:
-
-alpha: The concentration parameter for the Dirichlet distribution.
-beta: The concentration parameter for the Beta distribution.
-num_mixes: The number of augmented images to generate.
-prob: The probability of applying AUGMIX to an image.
-rotate_limit: The maximum angle of rotation for the image.
-translate_limit: The maximum amount of translation for the image.
-zoom_limit: The maximum amount of zoom for the image.
-cutout_const: The constant controlling the size of the cutouts.
-color_jitter_const: The constant controlling the amount of color jittering.
-
-
-
 
 
