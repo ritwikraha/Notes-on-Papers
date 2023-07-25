@@ -130,13 +130,7 @@ The authors mention that before going into why R-MAE is considered they must fir
 - This configuration makes good use of the plentiful contextual information found in the pixels to pre-train the encoder. This pre-training helps the encoder to better understand and interpret pixel data.
 - For a visual representation of this system, refer to Figure 2 in the original document.
 <img width="399" alt="Screenshot 2023-07-07 at 1 29 13 AM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/6d69996f-5007-416c-9e24-6ada0d17d62f">
-In summary:
 
-1. RAE, similar to MAE, uses an encoder and a decoder for region autoencoding.
-2. Both parts are constructed using ViT blocks.
-3. Just an encoder-decoder pair isn't sufficient, so they keep the MAE encoder in the RAE system.
-4. They use an extra 'neck' of ViT blocks to match dimensions and optionally distribute information.
-5. This setup effectively uses the plentiful pixel information to pre-train the encoder.
 
 ### One-to-many mapping
 
@@ -148,14 +142,6 @@ In summary:
 - In the RAE system, this means each region map would go through the encoder-decoder process individually. So, if there are 'b' images and 'k' regions per image, the network has to be applied 'b×k' times, which can be computationally expensive.
 - A simpler alternative might be to combine the 'k' regions in the channel axis. This would allow them to be viewed as a single image for encoding and decoding, and computations could be shared in the intermediate blocks.
 - However, unlike natural images that have fixed channel orders (like RGB), randomly sampled regions can appear in any order. So, it would be ideal if the solution still maintains 'permutation equivariance', which means it would work the same no matter the order of the regions.
-
-To summarize:
-
-1. Regions in images present a unique challenge because one pixel can belong to multiple regions.
-2. This problem is similar to one found in object detection.
-3. The common solution is to process each region separately, but this can be costly.
-4. A possible alternative is to combine regions and treat them as a single image, but the order of the regions can vary.
-5. An ideal solution would work regardless of the order of the regions.
 
 
 ### Regions as queries – the length variant
@@ -207,7 +193,7 @@ In simpler terms:
 <img width="694" alt="Screenshot 2023-07-11 at 1 29 23 AM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/b2234f36-d8bb-4322-a4b6-3593e93a547a">
 
 
-Figure 2, provides a visual illustration of the default pre-training pipeline, including what might be less important or 'de-highlighted' parts. The key points mentioned are:
+In the paper Figure 2, provides a visual illustration of the default pre-training pipeline, including what might be less important or 'de-highlighted' parts. The key points mentioned are:
 
 The 'pixel branch' feeds into the 'region branch'. In other words, the process or data flow that deals with pixels contributes to the process or data flow that deals with regions, but not the other way around.
 
@@ -217,7 +203,7 @@ The pipeline is named R-MAE, which stands for Region-aware Masked Autoencoding. 
 
 
 ### Implementation details
-
+Although training and implementation details are quite well-detailed and require a deeper look, we shall discuss the overviews of the major concepts in this video. Specifically the source of regions and pre-training data.
 
 1. **Source of regions:** 
    - They used a tool called the Felzenswalb-Huttenlocher (FH) algorithm to identify different parts, or 'regions', of the images. 
@@ -226,7 +212,7 @@ The pipeline is named R-MAE, which stands for Region-aware Masked Autoencoding. 
 
 2. **Pre-training data:** 
    - They prepared their models (RAE and R-MAE) using a collection of images called COCO train2017.
-   - They chose COCO because it has many pictures with full scenes and it also has 'ground-truth' regions - that means parts of the image that are accurately labelled, which can be very useful for training. 
+   - They chose COCO because it has many pictures with full scenes and it also has 'ground-truth' regions - that means parts of the image that are accurately labeled, which can be very useful for training. 
    - To generate regions, they used the FH tool at three different 'sizes', namely {500, 1000, 1500}. These sizes also set the smallest 'clusters' or groups of pixels that can be a region.
    - The COCO dataset has fewer images than another popular dataset called ImageNet. So, they ran the training process for a longer time (4,000 rounds, compared to the usual 800) which ends up being about half of what they usually do with the MAE method.
 
@@ -244,12 +230,12 @@ The pipeline is named R-MAE, which stands for Region-aware Masked Autoencoding. 
 
 <img width="373" alt="Screenshot 2023-07-22 at 12 18 23 AM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/44647b30-d85e-43b5-99a7-73fb0bce5592">
 
-The authors are presenting a new pre-training method called R-MAE. This method focuses on the concept of 'regions' in the Masked AutoEncoder (MAE) model, which is an important concept in visual understanding.
+- The authors presented a new pre-training method called R-MAE. This method focuses on the concept of 'regions' in the Masked AutoEncoder (MAE) model, which is an important concept in visual understanding.
+- A lot of experiments and the results show that R-MAE is more 'region-aware'. This means it's better at understanding and using information about regions in images. Because of this, it can improve performance on tasks that involve identifying specific locations in images, such as detection and segmentation tasks.
+- One of the key features of R-MAE is that it treats regions as 'queries'. This makes the 'region branch' (the part of the model that handles regions) very efficient, only adding a small amount of additional computational work (1.3% overhead).
 
-The authors have conducted a lot of experiments and the results show that R-MAE is more 'region-aware'. This means it's better at understanding and using information about regions in images. Because of this, it can improve performance on tasks that involve identifying specific locations in images, such as detection and segmentation tasks.
+But more than all the efficiencies and the metrics involved the paper tries to ask an important question.
 
-One of the key features of R-MAE is that it treats regions as 'queries'. This makes the 'region branch' (the part of the model that handles regions) very efficient, only adding a small amount of additional computational work (1.3% overhead).
+"What is the counter part of words in a visual setting?"
 
-Despite this efficiency, the region branch is key to R-MAE's performance. The method achieves state-of-the-art results among variants of MAE that have been pre-trained on ImageNet, a large image database often used in visual recognition research.
-
-Finally, the authors hope their work will inspire further research in this area. They want to close the gap to natural language processing by learning the visual equivalent of words in computer vision, meaning they want to improve how machines understand and interpret visual information, much like how they understand and interpret text.
+The effort is thus to close the gap to natural language processing by learning the visual equivalent of words in computer vision. The effort is to ask how do we enable machines to see they way we do.
