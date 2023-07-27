@@ -1,7 +1,7 @@
 # What is the problem?
-So a few days back I was reading this paper, and a line really stuck with me:
+So a few days back I was reading this paper, and this line really stuck with me:
 “Human perception will group similar scenes and objects together to parse complex scenes and objects”
-And then
+And then this line
 "Meanwhile, in vision, objects can serve as a natural counterpart to words..."
 Okay a lot of line stuck with me, but the point is this:
 Objects are analogous to words in a visual context.
@@ -12,7 +12,7 @@ The paper in question is a recent release from Meta titled 'R-MAE'
 TL;DR: If you don't want to read the paper and want a short one-line summary here you go: 
 
 What if we could use region-augmented reconstructive Pre-training for vision models starting with Masked Auto Encoders?
-The paper goes back to the olden days:
+The paper goes back to a familiar name:
 - Faster RCNN has already validated this idea through multiple literature and architecture, meanwhile
 - Reconstructive pretraining such as Masked Auto Encoder has proven to be an effective visual model while providing competitive performance.
 
@@ -49,9 +49,7 @@ But before we get into all of that let us try to revisit some old friends. Why r
    - Reconstructive methods, like denoising autoencoders, maintain the 2D structure of the image. 
    - However, it's not yet clear how using regions could further improve these types of methods.
 
-Wait why does MAE come into the picture?
 
-## Why MAE?
 
 <img width="346" alt="Screenshot 2023-07-21 at 11 53 23 PM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/7f1c67b0-ca8e-4a74-9b79-36281d91d0c5">
 
@@ -69,6 +67,9 @@ Wait why does MAE come into the picture?
 4. **Bridging the gap:** 
    - By improving how well machines can recognize regions in images (region awareness), the hope is to find new ways to bridge the gap between the way we learn language and the way machines learn to recognize images.
   
+Wait why does MAE come into the picture?
+
+## Why MAE?
 
  But wait, what is MAE?
 
@@ -216,6 +217,7 @@ Although training and implementation details are quite well-detailed and require
    - To generate regions, they used the FH tool at three different 'sizes', namely {500, 1000, 1500}. These sizes also set the smallest 'clusters' or groups of pixels that can be a region.
    - The COCO dataset has fewer images than another popular dataset called ImageNet. So, they ran the training process for a longer time (4,000 rounds, compared to the usual 800) which ends up being about half of what they usually do with the MAE method.
 
+(NOT PART OF VIDEO)
 3. **Other pre-training details:**
    - They generally followed the same settings (called hyperparameters) as those used in the MAE method.
    - They set the initial 'learning rate' to 0.0001. The learning rate is like the size of steps taken when the model is learning. A smaller step size can make the learning process more stable and helps maintain good performance.
