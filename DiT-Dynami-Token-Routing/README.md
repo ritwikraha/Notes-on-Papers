@@ -143,6 +143,39 @@ The actual equation governing the entire gating mechanism is such.
 
 <img width="458" alt="Screenshot 2023-08-10 at 9 00 40 PM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/2a8eea80-879d-498c-bbe8-055975c0d777">
 
+The authors also devise a complexity constraint, to have a trade-off between effectiveness and complexity. Essentially they formulate a cost with respect to FLOPs for each stage (transformer and patch embedding). They name this cost C_space, also calculate the cost for PVTv2 (Pyramid Vision Transformer architecture, the baseline that they are improving on), and name it C_base. They create a loss function as a combination of C_base and C_space. Add that loss to the overall loss function of the whole network and jointly optimize it during training.
+
+<img width="469" alt="Screenshot 2023-08-10 at 9 58 20 PM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/3614bf7f-4945-4202-a6df-61c04fe7eafb">
+
+### But what about validation?
+
+The authors conduct experiments for three task levels.
+
+1. Image Classification on ImageNet-1K
+2. Object Detection and Image Segmentation
+3. Semantic Segmentation
+
+The authors report a SOTA with comparison against GFLOPs against all three of these tasks.
+
+<img width="478" alt="Screenshot 2023-08-10 at 10 39 00 PM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/ad44bc00-daa1-4ca2-aef5-a748cffe1810">
+<img width="520" alt="Screenshot 2023-08-10 at 10 38 52 PM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/df447f92-9a0f-4eb8-b8ac-8729095d619b">
+<img width="472" alt="Screenshot 2023-08-10 at 10 38 41 PM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/9d876458-c7b6-4b6a-9182-e5a6292ea9fd">
+
+The authors also report an ablation study where they study the effect of not skipping any gate (fully connected  grid). They report only a slight increase in improvement. They also study random and attention augmented mask genertion as opposed to lernable mask generation as used by their startegy. Thye reprted that their strtaegy was superior in accuracy.
+
+
+<img width="496" alt="Screenshot 2023-08-10 at 10 42 57 PM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/8322cbd3-cae1-4ecb-b4fd-cad846193103">
+
+The authors leave us with the idea, that our models must be accomodating to the needs of the data. We must not aim or settle for the one bill fits all architecture but rather strive to find models that serve the smallest regions of the image with the same dexterity that they serve the largest one with. It is their belief that Dynamic Token Routing can be applied to monolithic vision transformers as well as languge domain. 
+
+It is upto us, how we employ our small robots on our custom chess-boards.
+
+
+
+
+
+
+
 
 
 
