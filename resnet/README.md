@@ -69,6 +69,13 @@ https://arxiv.org/pdf/1605.06431.pdf
 https://arxiv.org/pdf/1805.07477.pdf
 
 
+References:
+
+https://d2l.ai/chapter_convolutional-modern/resnet.html#residual-blocks
+https://ai.stackexchange.com/questions/17764/why-do-resnets-avoid-the-vanishing-gradient-problem#:~:text=The%20VGP%20occurs%20when%20the,almost%20the%20same%20as%20d)
+https://www.tensorflow.org/api_docs/python/tfm/vision/layers/ResidualBlock
+https://www.desmos.com/calculator/cy3xciahm0
+
 
 
 
