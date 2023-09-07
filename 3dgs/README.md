@@ -45,6 +45,11 @@ There are some obvious trade-offs between speed and quality in different methods
 
 In summary, the field faces a challenge in balancing the speed of creating 3D scenes with the quality of the visual output. The new solution aims to address this by offering both fast optimization times and high-quality results.
 
+### What was tried before?
+
+1. Traditional Scene Reconstruction and Rendering
+2. Neural Rendering and radiance Fields
+3. Point-based rendering and Radiance Fields?
 
 ### What is the solution?
 
@@ -55,4 +60,7 @@ The solution discussed in the text has three main parts. First, they use 3D Gaus
 Second, they fine-tune the 3D Gaussians during the process. They adjust various properties like position, transparency, shape, and lighting effects. This makes the 3D model more accurate and detailed. Sometimes, they even add or remove some of these Gaussians to improve the model's quality.
 
 Lastly, they have a fast method to turn this 3D model into a 2D image that you can see on a screen. They use quick calculations on a graphics card (GPU) to do this efficiently. Their method also makes sure that the 3D model looks accurate from different angles and viewpoints. Overall, their approach creates high-quality 3D models that can be easily and quickly turned into images.
+
+<img width="288" alt="Screenshot 2023-09-07 at 11 47 17 PM" src="https://github.com/ritwikraha/Notes-on-Papers/assets/44690292/d15918e8-6ec7-4efb-a684-91d8e9f2b1f5">
+
 
