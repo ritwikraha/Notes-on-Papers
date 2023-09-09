@@ -48,6 +48,17 @@ In summary, the field faces a challenge in balancing the speed of creating 3D sc
 ### What was tried before?
 
 1. Traditional Scene Reconstruction and Rendering
+![Uploading Screenshot 2023-09-09 at 11.58.42 PM.png…]()
+
+Imagine trying to recreate a 3D scene from multiple photos. Initially, you'd take photos from every possible angle, making sure you don't miss any spots (dense sampling). Later, you'd allow for photos taken at random angles without any strict pattern (unstructured capture).
+
+- Novel-view synthesis is the task of generating a new image of a scene from a different viewpoint than the ones used to capture the original images.
+- Light fields are a 4D representation of light, capturing the intensity and direction of light at every point in space. They can be used to generate novel views by re-projecting the light rays from the original images onto the new viewpoint.
+- Structure-from-motion (SfM) is a technique for estimating the 3D structure of a scene from a collection of images. It does this by finding the camera parameters for each image and then using these parameters to reconstruct the 3D points that were visible in the images.
+- Multi-view stereo (MVS) is a technique for estimating the depth of a scene from a collection of images. It does this by finding the correspondences between points in different images and then using these correspondences to estimate the depth of each point.
+- Neural rendering is a technique for generating images by training a neural network on a dataset of images. The neural network learns to map from a 3D scene representation to an image
+
+
 2. Neural Rendering and radiance Fields
 3. Point-based rendering and Radiance Fields?
 
