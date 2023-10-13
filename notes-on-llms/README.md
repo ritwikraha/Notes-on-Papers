@@ -197,3 +197,54 @@ Instead of the complex method, this approach is more straightforward. It directl
 ---
 
 *Overall Analogy*: If RLHF was like a complicated scoring system to teach students, the non-RL alignment approach is like a direct and simple classroom teaching method. Instead of constantly evaluating and correcting, you give the student a good textbook and guide them through it. It's simpler, direct, and often just as effective.
+
+
+**Summary & Explanation**:
+
+---
+
+**Topic**: Parameter Efficient Model Adaptation
+
+---
+
+**Introduction**:
+* Fine-tuning LLMs can be costly due to their massive number of parameters.
+* This section delves into methods to fine-tune these models efficiently.
+
+---
+
+**1. Adapter Tuning**:
+   * **What**: Introduces small neural network modules (called adapters) into Transformer models.
+   * **How**: Uses a bottleneck architecture that compresses and then expands the original feature vector.
+   * **Placement**: Either serially after key parts of a Transformer layer or in parallel with the attention and feed-forward layers.
+   * **Advantage**: Only the adapter modules are optimized, freezing the main language model parameters, resulting in fewer trainable parameters.
+
+---
+
+**2. Prefix Tuning**:
+   * **What**: Adds a series of trainable prefix vectors to each Transformer layer.
+   * **How**: Uses a reparameterization trick to stabilize training. After training, only the optimized prefix vectors remain.
+   * **Advantage**: Focuses on training only the prefix parameters, ensuring a parameter-efficient optimization.
+
+---
+
+**3. Prompt Tuning**:
+   * **What**: Adds trainable prompt vectors to the input layer.
+   * **How**: Soft prompt tokens, either in a free or prefix form, are added to input texts. These prompts help guide the model to perform specific tasks.
+   * **Advantage**: Since only the prompt embeddings at the input layer are trained, the number of trainable parameters remains small.
+
+---
+
+**4. Low-Rank Adaptation (LoRA)**:
+   * **What**: Imposes a low-rank constraint on parameter updates to reduce trainable parameters.
+   * **How**: The parameter update is approximated by low-rank decomposition matrices, which are more memory-efficient.
+   * **Advantage**: Saves memory and allows for one primary model copy with several task-specific matrices, making it adaptable for various tasks.
+
+---
+
+**Further Note**:
+There's an abundance of research on efficient tuning methods. Though this summary captures major methods, many intricate details and other techniques can be found in relevant research papers.
+
+---
+
+*In Simple Terms*: Think of these methods as techniques to "train smarter, not harder." Instead of trying to train the entire massive model, they cleverly train only certain parts or use shortcuts to ensure the model learns effectively without using too much computational power.
