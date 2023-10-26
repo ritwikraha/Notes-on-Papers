@@ -248,3 +248,55 @@ There's an abundance of research on efficient tuning methods. Though this summar
 ---
 
 *In Simple Terms*: Think of these methods as techniques to "train smarter, not harder." Instead of trying to train the entire massive model, they cleverly train only certain parts or use shortcuts to ensure the model learns effectively without using too much computational power.
+
+
+**Topic**: Memory-Efficient Model Adaptation
+
+The surge in the number of parameters in Large Language Models (LLMs) has been a boon for language understanding and generalization. However, it poses considerable challenges for real-world deployment due to the substantial memory footprint. Here, we delve into model quantization, a compression method to trim the memory requirement, thus making LLMs more feasible for resource-constrained applications.
+
+**5.4.1 Background for Quantization**
+
+Quantization in neural networks typically refers to the transformation of floating-point numbers to integers, mainly to the 8-bit integer format. This process touches upon two primary types of data:
+
+1. **Weights (model parameters)**: The static values tuned during training.
+2. **Activations (hidden activations)**: Dynamic values generated during forward passes.
+
+A simple quantization function is given by: 
+$x_q = R\left(\frac{x}{S}\right) - Z$
+Where:
+- $x$ is the floating number.
+- $x_q$ is its quantized version.
+- $S$ is the scaling factor determined by parameters $\alpha$ and $\beta$.
+- $Z$ is the zero-point factor for symmetric/asymmetric quantization.
+- $R(\cdot)$ is the rounding operation.
+
+The inverse process, dequantization, is described by:
+$\tilde{x} = S \cdot (x_q + Z)$
+Where $\tilde{x}$ is the recovered value. The quantization error is the difference between $x$ and $\tilde{x}$.
+
+**5.4.2 Quantization Methods for LLMs**
+
+There are two primary approaches to model quantization:
+
+1. **Quantization-Aware Training (QAT)**: Requires retraining of the entire model.
+2. **Post-Training Quantization (PTQ)**: Does not need model retraining.
+
+For LLMs, PTQ is more favored due to reduced computational costs. However, the unique activation patterns of LLMs make quantization challenging. Let's discuss some PTQ methods for LLMs:
+
+- **Mixed-precision decomposition**: This method, based on observations in [330], identifies outliers in hidden activations. These outliers, predominantly found in specific Transformer layer dimensions, are tackled using a combination of 16-bit floats and 8-bit integers.
+
+- **Fine-grained quantization**: Standard quantization often applies one set of parameters to an entire tensor, which can lead to inaccuracies. ZeroQuant [332] employs a more detailed approach, using token-wise quantization for activations and group-wise quantization for weights.
+
+- **Balancing the quantization difficulty**: SmoothQuant [331] introduces a transformation that shifts quantization difficulty from activations to weights, controlling it with a scaling factor.
+
+- **Layerwise quantization**: Methods like GPTQ [334] and AWQ [333] aim to find optimal quantized weights for individual layers. They use techniques like optimal brain quantization, lazy batch-updates, and activation-aware scaling to compress efficiently.
+
+To support these methods and ensure effective implementation, one must also consider hardware and system-level support.
+
+Other than PTQ, some studies have also delved into Quantization-Aware Training (QAT) and efficient fine-tuning for LLMs. For instance:
+
+- **Efficient fine-tuning enhanced quantization**: QLoRA [336] combines low-bit quantization with tunable adapters for efficient fine-tuning, preserving model performance.
+  
+- **Quantization-aware training (QAT) for LLMs**: Research in [337] investigates QAT effects, employing data-free distillation to compress various model components. They've achieved promising results on certain quantization aspects but acknowledge challenges in others.
+
+**In summary**, while LLMs offer state-of-the-art performance in many tasks, their large size is a considerable barrier for deployment. Quantization provides a promising avenue to address this, although challenges persist, especially for specific model components. As the field evolves, further innovations in quantization are eagerly anticipated.
