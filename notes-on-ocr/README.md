@@ -40,33 +40,31 @@ This binary map can then be used for further processing, like extracting text fr
 
 ![cover-1-binarized.png](DB%20for%20Dummies%20b5a3942e79b4490890b94d49369a6410/cover-1-binarized.png)
 
-The white region on the right image is the the text (marked by 1) and the rest of the region is not (marked by 0).
+The white region on the right image is the text (marked by 1) and the rest of the region is not (marked by 0).
 
 ## Why Differential Binarization?
 
-Binarization has long been recognized as a useful tool in computer vision, often serving as a fundamental step in processing and analyzing images. At its core, binarization involves converting a grayscale image to a binary image, typically through a straightforward and simple equation. However, a question arises: why is there a need for Differential Binarization in this context? The answer lies in the nature of the binarization function, which is inherently discrete. 
+Binarization has long been recognized as a useful tool in computer vision, often serving as a fundamental step in processing and analyzing images. At its core, binarization involves converting a grayscale image to a binary image, typically through a straightforward equation. However, a question arises: why is there a need for Differential Binarization in this context? The answer lies in the binarization function, which is inherently discrete. 
 
-Differential Binarization aims to transform this discrete function into a differentiable one. But why is this transformation necessary? The reason is rooted in the principles of deep learning. In a deep learning architecture, components are generally more effective and yield better performance when they are differentiable. This characteristic allows for more efficient and accurate computations, particularly in the backpropagation process used for training neural networks. Therefore, Differential Binarization aligns the binarization process with the needs of deep learning systems, enabling more seamless integration and improved performance in computer vision tasks.
+Differential Binarization aims to transform this discrete function into a differentiable one. But why is this transformation necessary? The reason is rooted in the principles of deep learning. In a deep learning architecture, components are generally more effective and yield better performance when differentiable. This characteristic allows for more efficient and accurate computations, particularly in the backpropagation process used for training neural networks. Therefore, Differential Binarization aligns the binarization process with the needs of deep learning systems, enabling more seamless integration and improved performance in computer vision tasks.
 
-Updated function for Binarization is as follows:
+The updated function for Binarization is as follows:
 
 where \hat{B} is the approximate binary map ;T is the adaptive threshold map learned from the network; k indicates the amplifying factor
 
 [https://files.oaiusercontent.com/file-uXAsbOmk5LmuTViXlg4RNkuc?se=2024-01-04T16%3A43%3A35Z&sp=r&sv=2021-08-06&sr=b&rscc=max-age%3D299%2C%20immutable&rscd=attachment%3B%20filename%3DScreenshot%25202024-01-04%2520at%252012.01.15%25E2%2580%25AFPM.png&sig=VM4r/ACbEqRBhm57JYNnlZmd6P14XaILU%2BPMe30jWyE%3D](https://files.oaiusercontent.com/file-uXAsbOmk5LmuTViXlg4RNkuc?se=2024-01-04T16%3A43%3A35Z&sp=r&sv=2021-08-06&sr=b&rscc=max-age%3D299%2C%20immutable&rscd=attachment%3B%20filename%3DScreenshot%25202024-01-04%2520at%252012.01.15%25E2%2580%25AFPM.png&sig=VM4r/ACbEqRBhm57JYNnlZmd6P14XaILU%2BPMe30jWyE%3D)
 
-\[
-\hat{B}*{i,j} = \frac{1}{1 + e^{-k(P*{i,j}-T_{i,j})}}
-\]
+$$\hat{B}*{i,j} = \frac{1}{1 + e^{-k(P*{i,j}-T_{i,j})}}$$
 
-But why does this work and more importantly when does it work? To understand that - we have to first realise when the above term becomes zero and when does it become 1.
+But why does this work and more importantly when does it work? To understand that - we have to first realize when the above term becomes zero and when does it become 1.
 
-So when would \(\hat{B}_{i,j}\) be zero:
+So when would $$\hat{B}_{i,j}$$ be zero:
 
 1. The logistic function \(\frac{1}{1 + e^{-x}}\) ranges between 0 and 1 for all real numbers \(x\).
 2. The only time a fraction equals zero is when the numerator is zero. However, in this logistic function, the numerator is always 1, so the function itself can never be exactly zero.
 3. Since \(\hat{B}*{i,j}\) is a logistic function, it will approach zero as the exponent \(k(P*{i,j}-T_{i,j})\) goes to negative infinity.
 4. To make \(k(P_{i,j}-T_{i,j})\) approach negative infinity, \(P_{i,j}\) would have to be much less than \(T_{i,j}\), assuming \(k\) is positive.
-5. Practically, \(\hat{B}*{i,j}\) can be considered approximately zero when \(P*{i,j}\) is sufficiently less than \(T_{i,j}\) such that the value of the logistic function is so close to zero it is effectively zero for the purposes of the model or application.
+5. Practically, \(\hat{B}*{i,j}\) can be considered approximately zero when \(P*{i,j}\) is sufficiently less than \(T_{i,j}\) such that the value of the logistic function is so close to zero it is effectively zero for the model or application.
 
 Thus it becomes clear that \(\hat{B}*{i,j}\) will never be exactly zero, but it can be so close to zero that it is effectively zero, which happens when \(P*{i,j}\) is significantly less than \(T_{i,j}\), given that \(k\) is a positive constant. 
 
@@ -80,7 +78,7 @@ This *only happens when* \(T_{i,j}\) is significantly less than *\(P*{i,j}\ , gi
 
 [db_desmos.mov](DB%20for%20Dummies%20b5a3942e79b4490890b94d49369a6410/db_desmos.mov)
 
-But how does this work? What does it all mean with respect to the image we are trying to binarize?
+But how does this work? What does it all mean concerning the image we are trying to binarize?
 
 1. **Let us first look at the** **DB Function \( f(x) \)**: 
 \(\frac{1}{1 + e^{-x}}\) 
