@@ -117,7 +117,7 @@ Datasets: May use smaller, curated datasets for fine-tuning (e.g., Conceptual Ca
     * **Creating Richer Video-Text Datasets:** Generating captions that capture both scene content and temporal aspects.
     * **Developing More Challenging Benchmarks:** Evaluating reasoning capabilities and understanding of the world beyond simple scene description.
 
-### 6. Conclusion
+### Conclusion
 **Description:** Summarizes the key points discussed in the paper and outlines the future direction for VLM research.
 This detailed breakdown of the paper's topics, subtopics, and related information should provide a comprehensive overview of the current state of VLM research and highlight key areas for future development. 
 
