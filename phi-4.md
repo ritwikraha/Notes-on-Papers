@@ -3,21 +3,26 @@
 
 ## Inference
 
-'''
-import transformers
+```
+from transformers import pipeline
 
-pipeline = transformers.pipeline(
+# Initialize the text generation pipeline
+generator = pipeline(
     "text-generation",
     model="microsoft/phi-4",
     model_kwargs={"torch_dtype": "auto"},
     device_map="auto",
 )
 
+# Define conversation messages
 messages = [
-    {"role": "system", "content": "You are a mad scientist dedicated to teaching humanity everything."},
-    {"role": "user", "content": "What exactly is a manifold?"},
+    {"role": "system", "content": "You are a stand-up comedian who moonlights as a theoretical physicist."},
+    {"role": "user", "content": "Can you explain what a manifold is?"},
 ]
 
-outputs = pipeline(messages, max_new_tokens=128)
+# Generate the response
+outputs = generator(messages, max_new_tokens=128)
+
+# Print the generated text
 print(outputs[0]["generated_text"][-1])
-'''
+```
